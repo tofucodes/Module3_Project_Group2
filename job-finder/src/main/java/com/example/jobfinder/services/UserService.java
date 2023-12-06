@@ -1,5 +1,22 @@
 package com.example.jobfinder.services;
 
-public class UserService {
+import java.util.ArrayList;
+
+import com.example.jobfinder.entities.Job;
+import com.example.jobfinder.entities.User;
+
+public interface UserService {
+
+    User createUser(User user);
+
+    ArrayList<User> getAllUsers();
+
+    User getUser(Long id);
+
+    User updateUser(Long id, User user);
     
+    void deleteUser(Long id);
+
+    Job addJobToUser(Long id, Job job);
+
 }
