@@ -6,15 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+// import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+// @AllArgsConstructor
 @Entity
-@Table (name = "jobs")
+@Table(name = "jobs")
 public class Job {
 
     @Id
@@ -22,18 +22,36 @@ public class Job {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "job_title")
-    private String jobTitle;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "job_description")
-    private String jobDescription;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "job_category")
-    private String jobCategory;
+    @Column(name = "category")
+    private String category;
 
-    public Job (){
+    @Column(name = "salary")
+    private double salary;
+
+    @Column(name = "years_of_experience")
+    private int yearsOfExperience;
+
+    @Column(name = "country")
+    private String country;
+
+    public Job() {
 
     }
 
+    public Job(String title, String description, String category, 
+    double salary, int yearsOfExperience, String country) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.salary = salary;
+        this.yearsOfExperience = yearsOfExperience;
+        this.country = country;
+    }
 
 }
