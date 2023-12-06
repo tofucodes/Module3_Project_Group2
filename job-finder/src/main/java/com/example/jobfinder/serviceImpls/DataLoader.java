@@ -17,9 +17,11 @@ public class DataLoader {
 
     @PostConstruct
     public void loadData(){
+        jobRepository.deleteAll();
+
+        // jobRepository.save(new Job("Software Engineer","lorem ipsum", "Information Technology", 4500, 5, "Singapore"));
 
     // clear the database first
-
     // load data here
     jobRepository.save(new Job("Analyst"));
     jobRepository.save(new Job("Project Manager"));

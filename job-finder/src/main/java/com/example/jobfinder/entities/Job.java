@@ -12,15 +12,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+// import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+// @AllArgsConstructor
 @Entity
-@Table (name = "jobs")
+@Table(name = "jobs")
 public class Job {
 
     @Id
@@ -28,36 +28,39 @@ public class Job {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "job_title")
-    private String jobTitle;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "job_description")
-    private String jobDescription;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "job_category")
-    private String jobCategory;
+    @Column(name = "category")
+    private String category;
 
-    @ManyToMany
-    @JoinTable(
-    name = "user_job",
-    joinColumns = @JoinColumn(name = "job_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users;
+    @Column(name = "salary")
+    private double salary;
 
-    public Job (){
-    }
+    @Column(name = "years_of_experience")
+    private int yearsOfExperience;
 
-    public Job(String jobTitle){
-        this.jobTitle =jobTitle;
-    }
+    @Column(name = "country")
+    private String country;
+
+    public Job() {
 
     public Job(Long id, String jobTitle){
         this.id = id;
         this.jobTitle = jobTitle;
     }
 
-
-
+    public Job(String title, String description, String category, 
+    double salary, int yearsOfExperience, String country) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.salary = salary;
+        this.yearsOfExperience = yearsOfExperience;
+        this.country = country;
+    }
 
 }
