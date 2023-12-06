@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         User selectedUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         // Get the set of jobs associated with user
-        Set<Job> userJobs = selectedUser.getJobs();
+        ArrayList<Job> userJobs = selectedUser.getJobs();
 
         // add new job to ser of user's job
         userJobs.add(job);

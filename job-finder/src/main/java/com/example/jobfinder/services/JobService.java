@@ -1,5 +1,11 @@
 package com.example.jobfinder.services;
 
-public class JobService {
+import com.example.jobfinder.entities.Job;
+
+public interface JobService {
+
+    Job createJob(Job job);
+
+
     
 }
