@@ -2,6 +2,7 @@ package com.example.jobfinder.serviceImpls;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -75,12 +76,14 @@ public class UserServiceImpl implements UserService {
         // update the set of jobs in user entity
         selectedUser.setJobs(userJobs);
 
+        if (job.getUsers() == null) {
+        job.setUsers(new HashSet<>());}
+
         job.getUsers().add(selectedUser);
 
         // save the user 
         // will cascade change to associated jobs
         userRepository.save(selectedUser);
-        jobRepository.save(job);
 
         return job;
     }

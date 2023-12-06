@@ -47,7 +47,7 @@ public class Job {
     @Column(name = "country")
     private String country;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(
         name = "user_job", 
         joinColumns = @JoinColumn(name = "job_id"),
