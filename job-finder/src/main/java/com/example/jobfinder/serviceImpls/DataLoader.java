@@ -23,10 +23,10 @@ public class DataLoader {
 
     // clear the database first
     // load data here
-    jobRepository.save(new Job("Analyst"));
-    jobRepository.save(new Job("Project Manager"));
-    jobRepository.save(new Job("Scientist"));
-    jobRepository.save(new Job("Lab Tech"));
+    // jobRepository.save(new Job("Analyst"));
+    // jobRepository.save(new Job("Project Manager"));
+    // jobRepository.save(new Job("Scientist"));
+    // jobRepository.save(new Job("Lab Tech"));
 
     }
 
