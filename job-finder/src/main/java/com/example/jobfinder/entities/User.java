@@ -10,6 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -45,10 +47,18 @@ public class User {
     @Column(name = "country")
     private String country;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<Job> jobs;
 
+    // @ManyToMany(mappedBy = "users")
+    // private Set<Job> jobs = new HashSet<>();
+
     public User(){
+    }
+
+    public User (String firstName){
+        this.firstName = firstName;
+
     }
 
     public User(String firstName, String lastName, String email, String country){

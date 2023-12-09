@@ -2,6 +2,8 @@ package com.example.jobfinder.services;
 
 import java.util.ArrayList;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.jobfinder.entities.Job;
 import com.example.jobfinder.entities.User;
 

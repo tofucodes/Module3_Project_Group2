@@ -1,11 +1,13 @@
 package com.example.jobfinder.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -47,7 +49,7 @@ public class Job {
     @Column(name = "country")
     private String country;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_job", 
         joinColumns = @JoinColumn(name = "job_id"),
@@ -56,6 +58,7 @@ public class Job {
     private Set<User> users;
 
     public Job() {}
+
 
     public Job(String title, String description, String category, 
     double salary, int yearsOfExperience, String country) {

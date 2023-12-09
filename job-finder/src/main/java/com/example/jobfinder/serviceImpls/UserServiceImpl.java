@@ -6,19 +6,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.jobfinder.entities.Job;
 import com.example.jobfinder.entities.User;
+import com.example.jobfinder.exceptions.JobNotFoundException;
 import com.example.jobfinder.exceptions.UserNotFoundException;
 import com.example.jobfinder.repositories.JobRepository;
 import com.example.jobfinder.repositories.UserRepository;
 import com.example.jobfinder.services.UserService;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private UserRepository userRepository;
     private JobRepository jobRepository;
@@ -63,27 +68,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional    
     public Job addJobToUser(Long id, Job job) {
+        logger.info("addJobToUser method being called");
         // find the user by Id
-        User selectedUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-        // Get the set of jobs associated with user
-        Set<Job> userJobs = selectedUser.getJobs();
+        Set <Job> userJobs = user.getJobs();
 
-        // add new job to ser of user's job
-        userJobs.add(job);
-        
-        // update the set of jobs in user entity
-        selectedUser.setJobs(userJobs);
-
+        // to initialise the collections if they are null
+        // to avoid NullPointerExceptions
         if (job.getUsers() == null) {
         job.setUsers(new HashSet<>());}
 
-        job.getUsers().add(selectedUser);
+        if(userJobs == null){
+            user.setJobs(new HashSet<>());
+        }
+        // if user's job list does not already contain this job, add it in
+        // add user to job's list as well
+        if(!userJobs.contains(job)){
+            userJobs.add(job);
+            user.setJobs(userJobs);
+            job.getUsers().add(user);
+            userRepository.save(user);
+            jobRepository.save(job);
+        }     
+        
+        // to synchronized with the database immediately
+        // changes made to the entities are reflected in the database before the transaction commits
+        jobRepository.flush();
+        userRepository.flush();
 
-        // save the user 
-        // will cascade change to associated jobs
-        userRepository.save(selectedUser);
+        logger.info("userRepository: " + userRepository.findAll());
+        logger.info("jobRepository: " + jobRepository.findAll());
 
         return job;
     }
@@ -91,11 +108,5 @@ public class UserServiceImpl implements UserService {
 
 
 
-
-    
-
-
-
-    
     
 }
