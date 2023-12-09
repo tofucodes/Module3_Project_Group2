@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,6 @@ public class UserController {
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
-    @Transactional
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         User foundUser = userService.getUser(id);
@@ -64,10 +65,9 @@ public class UserController {
 
     @PostMapping("/{id}/jobs")
     public ResponseEntity<Job> addJobtoUser(@PathVariable Long id, @RequestBody Job job) {
-        Job userJobs = userService.addJobToUser(id, job);
-        return new ResponseEntity<>(userJobs, HttpStatus.CREATED);
+        Job userJob = userService.addJobToUser(id, job);
+        return new ResponseEntity<>(userJob, HttpStatus.CREATED);
     }
-
 
 
 
