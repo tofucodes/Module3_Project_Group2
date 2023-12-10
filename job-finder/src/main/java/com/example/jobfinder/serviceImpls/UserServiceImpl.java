@@ -21,6 +21,7 @@ import com.example.jobfinder.services.UserService;
 
 
 @Service
+@Transactional   
 public class UserServiceImpl implements UserService {
 
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -67,8 +68,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional    
+    @Override 
     public Job addJobToUser(Long id, Job job) {
         logger.info("addJobToUser method being called");
         // find the user by Id
@@ -83,22 +83,14 @@ public class UserServiceImpl implements UserService {
 
         if(userJobs == null){
             user.setJobs(new HashSet<>());
-        }
-        // if user's job list does not already contain this job, add it in
-        // add user to job's list as well
-        if(!userJobs.contains(job)){
+        } else if (!userJobs.contains(job)){
             userJobs.add(job);
             user.setJobs(userJobs);
             job.getUsers().add(user);
             userRepository.save(user);
             jobRepository.save(job);
-        }     
-        
-        // to synchronized with the database immediately
-        // changes made to the entities are reflected in the database before the transaction commits
-        jobRepository.flush();
-        userRepository.flush();
-
+        } 
+    
         logger.info("userRepository: " + userRepository.findAll());
         logger.info("jobRepository: " + jobRepository.findAll());
 
