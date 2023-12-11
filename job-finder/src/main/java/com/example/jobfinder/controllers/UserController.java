@@ -63,9 +63,9 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/{id}/jobs")
-    public ResponseEntity<Job> addJobtoUser(@PathVariable Long id, @RequestBody Job job) {
-        Job userJob = userService.addJobToUser(id, job);
+    @PostMapping("/{id}/jobs/{job_id}")
+    public ResponseEntity<Job> addJobtoUser(@PathVariable Long id, @PathVariable Long job_id) {
+        Job userJob = userService.addJobToUser(id, job_id);
         return new ResponseEntity<>(userJob, HttpStatus.CREATED);
     }
 

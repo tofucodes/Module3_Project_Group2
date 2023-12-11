@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.jobfinder.entities.Job;
 import com.example.jobfinder.entities.User;
+import com.example.jobfinder.exceptions.JobAlreadySavedException;
 import com.example.jobfinder.exceptions.JobNotFoundException;
 import com.example.jobfinder.exceptions.UserNotFoundException;
 import com.example.jobfinder.repositories.JobRepository;
@@ -69,36 +70,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override 
-    public Job addJobToUser(Long id, Job job) {
+    public Job addJobToUser(Long id, Long job_id) {
         logger.info("addJobToUser method being called");
         // find the user by Id
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         Set <Job> userJobs = user.getJobs();
 
-        // to initialise the collections if they are null
-        // to avoid NullPointerExceptions
-        if (job.getUsers() == null) {
-        job.setUsers(new HashSet<>());}
+        Job job = jobRepository.findById(job_id).orElseThrow(() -> new JobNotFoundException(job_id));
 
-        if(userJobs == null){
-            user.setJobs(new HashSet<>());
-        } else if (!userJobs.contains(job)){
-            userJobs.add(job);
-            user.setJobs(userJobs);
-            job.getUsers().add(user);
-            userRepository.save(user);
-            jobRepository.save(job);
-        } 
-    
-        logger.info("userRepository: " + userRepository.findAll());
-        logger.info("jobRepository: " + jobRepository.findAll());
+        Set <User> jobUsers = job.getUsers();
 
-        return job;
-    }
+        boolean jobAlreadyInUserList = userJobs.stream().anyMatch((existingJob -> existingJob.getId().equals(job_id)));
+            if (jobAlreadyInUserList){
+                throw new JobAlreadySavedException(job_id);           
+            } else {
+                jobUsers.add(user);
+                job.setUsers(jobUsers);
+                jobRepository.save(job);
+            }
 
+        logger.info("Job: " + job);
+        
 
+    return job;
 
-
-    
+}
+ 
 }

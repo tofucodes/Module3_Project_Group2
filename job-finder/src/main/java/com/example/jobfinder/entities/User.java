@@ -17,9 +17,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,7 +49,7 @@ public class User {
     @Column(name = "country")
     private String country;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "users")
     private Set<Job> jobs;
 
     // @ManyToMany(mappedBy = "users")

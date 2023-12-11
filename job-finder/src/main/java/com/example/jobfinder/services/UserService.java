@@ -19,6 +19,7 @@ public interface UserService {
     
     void deleteUser(Long id);
 
-    Job addJobToUser(Long id, Job job);
+    Job addJobToUser(Long id, Long job_id);
+
 
 }
