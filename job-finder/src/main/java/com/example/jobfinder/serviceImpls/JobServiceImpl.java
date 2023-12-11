@@ -47,7 +47,8 @@ public class JobServiceImpl implements JobService{
          jobToUpdate.setYearsOfExperience(job.getYearsOfExperience());
          jobToUpdate.setCountry(job.getCountry());
          // save the updated job back to the database
-         return jobRepository.save(jobToUpdate);
+        jobRepository.save(jobToUpdate);
+        return jobToUpdate;
 
     }
 
