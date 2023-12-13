@@ -1,8 +1,11 @@
 package com.example.jobfinder.serviceImpls;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.example.jobfinder.entities.Job;
@@ -56,5 +59,15 @@ public class JobServiceImpl implements JobService{
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
     }
-
 }
+
+    //issue with the .map method below
+    // public Page<Job> searchByCriteria(JobSearchCriteria criteria, Pageable pageable) {
+    //     return JobRepository.searchByQuery(
+    //         criteria.getTitle(),
+    //         criteria.getDescription(),
+    //         criteria.getCategory(),
+    //         pageable
+    //     ).map(Page<Job>::Job);
+
+

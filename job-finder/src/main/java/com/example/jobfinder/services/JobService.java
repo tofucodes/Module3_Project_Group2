@@ -11,5 +11,7 @@ public interface JobService {
     
     void deleteJob(Long id);
 
+    // Job searchByCriteria(String title, String description, String category);
+
 
 }

@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,6 +64,8 @@ public class Job {
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")  
     )
+
+    @JsonBackReference
     private Set<User> users;
 
     public Job() {}
