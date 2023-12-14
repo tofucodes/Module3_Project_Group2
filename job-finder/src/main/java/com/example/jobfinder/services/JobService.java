@@ -1,6 +1,10 @@
 package com.example.jobfinder.services;
 
+import java.util.ArrayList;
+import java.util.Locale.Category;
+
 import com.example.jobfinder.entities.Job;
+import com.example.jobfinder.exceptions.JobNotFoundException;
 
 public interface JobService {
     Job createJob(Job job);
@@ -13,5 +17,9 @@ public interface JobService {
 
     // Job searchByCriteria(String title, String description, String category);
 
+    // GET FILTERED
+    ArrayList<Job> findJobsByParam(Category category, Double minSalary, Double maxSalary);
 
+    // GET ALL
+    ArrayList<Job> getAllJobs();
 }

@@ -1,5 +1,8 @@
 package com.example.jobfinder.serviceImpls;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale.Category;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,6 +61,52 @@ public class JobServiceImpl implements JobService{
     @Override
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
+    }
+
+    @Override
+    public ArrayList<Job> findJobsByParam(Category category, Double minSalary, Double maxSalary) {
+        List<Job> filteredJobs;
+        
+        if(category == null && minSalary == null && maxSalary == null) {
+            // no param is being passed in, so return all
+            filteredJobs = getAllJobs();
+        } else if (category == null) {
+            // category is null but either minAmount or maxAmount is not null
+            if (minSalary == null) {
+                // since no minAmount is set, set minAmount to 0 to include all records from 0 onwards
+                minSalary = 0.0;
+            }
+            if (maxSalary == null) {
+                // since no maxAmount is set, set maxAmount to biggest value to include all records lesser than biggest value
+                maxSalary = Double.MAX_VALUE;
+            }
+            filteredJobs = jobRepository.findBySalaryBetween(minSalary, maxSalary);
+        } else {
+            // category is not null, minAmount and maxAmount may be null
+            if (minSalary == null) {
+                // since no minAmount is set, set minAmount to 0 to include all records from 0 onwards
+                minSalary = 0.0;
+            }
+            if (maxSalary == null) {
+                // since no maxAmount is set, set maxAmount to biggest value to include all records lesser than biggest value
+                maxSalary = Double.MAX_VALUE;
+            }
+            filteredJobs = jobRepository.findByCategoryAndSalaryBetween(category, minSalary, maxSalary);
+        }
+        
+        if (filteredJobs.isEmpty()) {
+            throw new JobNotFoundException();
+        }
+        return (ArrayList<Job>) filteredJobs;
+    }
+
+    @Override
+    public ArrayList<Job> getAllJobs() {
+        List<Job> jobs = jobRepository.findAll();
+        if (jobs.isEmpty()) {
+            throw new JobNotFoundException();
+        }
+        return (ArrayList<Job>) jobs;
     }
 }
 

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jobfinder.entities.Job;
 import com.example.jobfinder.entities.User;
+import com.example.jobfinder.exceptions.JobNotFoundException;
 import com.example.jobfinder.repositories.JobRepository;
 import com.example.jobfinder.services.JobService;
 import com.example.jobfinder.services.UserService;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Locale.Category;
 
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
@@ -70,14 +72,29 @@ public class JobController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Search
-    @GetMapping("/search")
-    public ResponseEntity<Page<Job>> searchJobsByQuery(
-        @RequestParam(value = "title", required = false) String title,
-        @RequestParam(value = "description", required = false) String description,
-        @RequestParam(value = "category", required = false) String category, Pageable pageable
-        ) {
-       Page<Job> result = JobRepository.searchByQuery(title, description, category, pageable);
-        return ResponseEntity.ok(result);
+//     // Search
+//     @GetMapping("/search")
+//     public ResponseEntity<Page<Job>> searchJobsByQuery(
+//         @RequestParam(value = "title", required = false) String title,
+//         @RequestParam(value = "description", required = false) String description,
+//         @RequestParam(value = "category", required = false) String category, Pageable pageable
+//         ) {
+//        Page<Job> result = JobRepository.searchByQuery(title, description, category, pageable);
+//         return ResponseEntity.ok(result);
+// }
 
-}}
+    @GetMapping({ "", "/" })
+        public ResponseEntity<?> getAllJobs(
+                @RequestParam(required = false) Category category,
+                @RequestParam(required = false) Double minSalary,
+                @RequestParam(required = false) Double maxSalary) {
+            try {
+                ArrayList<Job> results = jobService.findJobsByParam(category, minSalary, maxSalary);
+                return ResponseEntity.status(HttpStatus.OK).body(results);
+            } catch (JobNotFoundException ex) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+        }
+
+}
