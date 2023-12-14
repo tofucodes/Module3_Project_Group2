@@ -1,6 +1,9 @@
 package com.example.jobfinder.serviceImpls;
 
+import javax.xml.crypto.Data;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.example.jobfinder.entities.Job;
 import com.example.jobfinder.entities.User;
@@ -9,19 +12,25 @@ import com.example.jobfinder.repositories.UserRepository;
 
 import jakarta.annotation.PostConstruct;
 
+@Component
 public class DataLoader {
     private JobRepository jobRepository;
     private UserRepository userRepository;
 
-    @Autowired
-    public DataLoader(JobRepository jobRepository) {
+    public DataLoader(JobRepository jobRepository, UserRepository userRepository) {
         this.jobRepository = jobRepository;
-    }
-
-    @Autowired
-    public DataLoader(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    // @Autowired
+    // public DataLoader(JobRepository jobRepository) {
+    //     this.jobRepository = jobRepository;
+    // }
+
+    // @Autowired
+    // public DataLoader(UserRepository userRepository) {
+    //     this.userRepository = userRepository;
+    // }
 
     @PostConstruct
     public void loadData() {
