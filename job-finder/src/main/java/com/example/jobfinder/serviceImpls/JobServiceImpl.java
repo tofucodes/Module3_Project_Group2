@@ -64,7 +64,7 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public ArrayList<Job> findJobsByParam(Category category, Double minSalary, Double maxSalary) {
+    public ArrayList<Job> findJobsByParam(String category, Double minSalary, Double maxSalary) {
         List<Job> filteredJobs;
         
         if(category == null && minSalary == null && maxSalary == null) {

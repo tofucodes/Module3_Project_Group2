@@ -17,11 +17,11 @@ public interface JobRepository extends JpaRepository <Job, Long> {
     // add custom queries here
 
     // derievedQuery -> findBy[fieldName:(e.g.category)] return all records where the [field:(e.g.category)] = value
-    List<Job> findByCategory(Category category);
+    List<Job> findByCategory(String category);
 
     // derievedQuery -> findBy[fieldName:(e.g.amount)]Between return all records where the [field:(e.g.amount)] between both values
     List<Job> findBySalaryBetween(Double minSalary, Double maxSalary);
 
     // derievedQuery -> findBy[firstField]AND[secondField]
-    List<Job> findByCategoryAndSalaryBetween(Category category, Double minSalary, Double maxSalary);
+    List<Job> findByCategoryAndSalaryBetween(String category, Double minSalary, Double maxSalary);
 }

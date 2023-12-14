@@ -18,7 +18,7 @@ public interface JobService {
     // Job searchByCriteria(String title, String description, String category);
 
     // GET FILTERED
-    ArrayList<Job> findJobsByParam(Category category, Double minSalary, Double maxSalary);
+    ArrayList<Job> findJobsByParam(String category, Double minSalary, Double maxSalary);
 
     // GET ALL
     ArrayList<Job> getAllJobs();

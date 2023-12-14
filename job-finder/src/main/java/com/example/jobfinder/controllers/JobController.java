@@ -85,7 +85,7 @@ public class JobController {
 
     @GetMapping({ "", "/" })
         public ResponseEntity<?> getAllJobs(
-                @RequestParam(required = false) Category category,
+                @RequestParam(required = false) String category,
                 @RequestParam(required = false) Double minSalary,
                 @RequestParam(required = false) Double maxSalary) {
             try {
