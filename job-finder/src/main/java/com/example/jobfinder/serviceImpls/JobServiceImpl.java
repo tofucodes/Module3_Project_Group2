@@ -1,8 +1,14 @@
 package com.example.jobfinder.serviceImpls;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale.Category;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.example.jobfinder.entities.Job;
@@ -47,7 +53,8 @@ public class JobServiceImpl implements JobService{
          jobToUpdate.setYearsOfExperience(job.getYearsOfExperience());
          jobToUpdate.setCountry(job.getCountry());
          // save the updated job back to the database
-         return jobRepository.save(jobToUpdate);
+        jobRepository.save(jobToUpdate);
+        return jobToUpdate;
 
     }
 
@@ -56,4 +63,60 @@ public class JobServiceImpl implements JobService{
         jobRepository.deleteById(id);
     }
 
+    @Override
+    public ArrayList<Job> findJobsByParam(String category, Double minSalary, Double maxSalary) {
+        List<Job> filteredJobs;
+        
+        if(category == null && minSalary == null && maxSalary == null) {
+            // no param is being passed in, so return all
+            filteredJobs = getAllJobs();
+        } else if (category == null) {
+            // category is null but either minAmount or maxAmount is not null
+            if (minSalary == null) {
+                // since no minAmount is set, set minAmount to 0 to include all records from 0 onwards
+                minSalary = 0.0;
+            }
+            if (maxSalary == null) {
+                // since no maxAmount is set, set maxAmount to biggest value to include all records lesser than biggest value
+                maxSalary = Double.MAX_VALUE;
+            }
+            filteredJobs = jobRepository.findBySalaryBetween(minSalary, maxSalary);
+        } else {
+            // category is not null, minAmount and maxAmount may be null
+            if (minSalary == null) {
+                // since no minAmount is set, set minAmount to 0 to include all records from 0 onwards
+                minSalary = 0.0;
+            }
+            if (maxSalary == null) {
+                // since no maxAmount is set, set maxAmount to biggest value to include all records lesser than biggest value
+                maxSalary = Double.MAX_VALUE;
+            }
+            filteredJobs = jobRepository.findByCategoryAndSalaryBetween(category, minSalary, maxSalary);
+        }
+        
+        if (filteredJobs.isEmpty()) {
+            throw new JobNotFoundException();
+        }
+        return (ArrayList<Job>) filteredJobs;
+    }
+
+    @Override
+    public ArrayList<Job> getAllJobs() {
+        List<Job> jobs = jobRepository.findAll();
+        if (jobs.isEmpty()) {
+            throw new JobNotFoundException();
+        }
+        return (ArrayList<Job>) jobs;
+    }
 }
+
+    //issue with the .map method below
+    // public Page<Job> searchByCriteria(JobSearchCriteria criteria, Pageable pageable) {
+    //     return JobRepository.searchByQuery(
+    //         criteria.getTitle(),
+    //         criteria.getDescription(),
+    //         criteria.getCategory(),
+    //         pageable
+    //     ).map(Page<Job>::Job);
+
+

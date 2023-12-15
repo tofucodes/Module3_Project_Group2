@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.Range;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,13 +19,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 // import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-// @AllArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "jobs")
 public class Job {
@@ -32,18 +40,21 @@ public class Job {
     private Long id;
 
     @Column(name = "title")
+    @NotBlank(message = "Job title is mandatory")
     private String title;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "category")
+    @NotBlank(message = "Categort is mandatory")
     private String category;
 
     @Column(name = "salary")
     private double salary;
 
     @Column(name = "years_of_experience")
+    @Range(min = 0, max = 20, message = " Years of experience should be between 0 and 20")
     private int yearsOfExperience;
 
     @Column(name = "country")
@@ -55,6 +66,8 @@ public class Job {
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")  
     )
+
+    @JsonBackReference
     private Set<User> users;
 
     public Job() {}
