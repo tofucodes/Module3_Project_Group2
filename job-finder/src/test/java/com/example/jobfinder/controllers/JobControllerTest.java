@@ -1,4 +1,4 @@
-package com.example.jobfinder.services;
+package com.example.jobfinder.controllers;
 
 
 import org.junit.jupiter.api.DisplayName;
