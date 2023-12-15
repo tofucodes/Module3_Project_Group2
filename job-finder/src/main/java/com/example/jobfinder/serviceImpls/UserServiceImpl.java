@@ -84,8 +84,10 @@ public class UserServiceImpl implements UserService {
         // find the user by Id
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
+        // get all user's existing jobs
         Set <Job> userJobs = user.getJobs();
 
+        // to avoid nullpointexception if user currently has no jobs
         if (userJobs == null) {
             userJobs = new HashSet<>();
         }
@@ -94,10 +96,12 @@ public class UserServiceImpl implements UserService {
 
         Set <User> jobUsers = job.getUsers();
 
+        // to avoid nullpointexception if job currently has no users
         if (jobUsers == null) {
             jobUsers = new HashSet<>();
         }
 
+        // check if the job that is requested to be added was not previously added
         boolean jobAlreadyInUserList = userJobs.stream().anyMatch((existingJob -> existingJob.getId().equals(job_id)));
             if (jobAlreadyInUserList){
                 throw new JobAlreadySavedException(job_id);           
