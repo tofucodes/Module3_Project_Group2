@@ -37,12 +37,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        logger.info("createUser method being called");
         User newUser = userRepository.save(user);
         return newUser;
     }
 
     @Override
     public ArrayList<User> getAllUsers() {
+        logger.info("getAllUsers method being called");
         List<User> allUsers = userRepository.findAll();
         return (ArrayList<User>) allUsers;
     }
@@ -50,12 +52,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long id) {
+        logger.info("getUser method being called");
         User foundUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return foundUser;
     }
 
     @Override
     public User updateUser(Long id, User user) {
+        logger.info("updateUser method being called");
+
         User userToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
@@ -67,6 +72,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
+        logger.info("deleteUser method being called");
+
         userRepository.deleteById(id);
     }
 
@@ -100,7 +107,7 @@ public class UserServiceImpl implements UserService {
                 jobRepository.save(job);
             }
             
-        logger.info("Job: " + job);
+        // logger.info("Job: " + job);
     
     return job;
 

@@ -1,13 +1,13 @@
-package com.example.jobfinder.serviceImpls;
+// package com.example.jobfinder.serviceImpls;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
+// import lombok.Setter;
 
-@Getter
-@Setter
+// @Getter
+// @Setter
 
-public class JobSearchCriteria {
-    private String title;
-    private String description;
-    private String category;
-}
+// public class JobSearchCriteria {
+//     private String title;
+//     private String description;
+//     private String category;
+// }

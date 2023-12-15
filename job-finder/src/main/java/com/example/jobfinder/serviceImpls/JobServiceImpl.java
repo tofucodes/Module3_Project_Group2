@@ -6,6 +6,8 @@ import java.util.Locale.Category;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,9 @@ import com.example.jobfinder.services.JobService;
 
 @Service
 public class JobServiceImpl implements JobService{
+
+    private final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
+
     private JobRepository jobRepository;
     
     public JobServiceImpl(JobRepository jobRepository) {
@@ -26,12 +31,16 @@ public class JobServiceImpl implements JobService{
     
     @Override
     public Job createJob(Job job) {
+        logger.info("createJob method being called");
+
         Job newJob = jobRepository.save(job);
         return newJob;
     }
 
     @Override
     public Job getJob(Long id) {
+        logger.info("getJob method being called");
+
         Optional<Job> optionalJob = jobRepository.findById(id);
         if (optionalJob.isPresent() ) {
             Job foundJob = optionalJob.get();
@@ -43,6 +52,8 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public Job updateJob(Long id, Job job) {
+        logger.info("updateJob method being called");
+
          // retrieve the job from the database
          Job jobToUpdate = jobRepository.findById(id).get();
          // update the job retrieved from the database
@@ -60,11 +71,15 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public void deleteJob(Long id) {
+        logger.info("deleteJob method being called");
+
         jobRepository.deleteById(id);
     }
 
     @Override
     public ArrayList<Job> findJobsByParam(String category, Double minSalary, Double maxSalary) {
+        logger.info("findJobsByParam method being called");
+
         List<Job> filteredJobs;
         
         if(category == null && minSalary == null && maxSalary == null) {
@@ -102,6 +117,9 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public ArrayList<Job> getAllJobs() {
+
+        logger.info("getAllJobs method being called");
+
         List<Job> jobs = jobRepository.findAll();
         if (jobs.isEmpty()) {
             throw new JobNotFoundException();
@@ -109,7 +127,6 @@ public class JobServiceImpl implements JobService{
         return (ArrayList<Job>) jobs;
     }
 }
-
     //issue with the .map method below
     // public Page<Job> searchByCriteria(JobSearchCriteria criteria, Pageable pageable) {
     //     return JobRepository.searchByQuery(
