@@ -101,7 +101,8 @@ public class UserServiceImpl implements UserService {
             jobUsers = new HashSet<>();
         }
 
-        // check if the job that is requested to be added was not previously added
+        // check if the job that is requested to be added was not previously already added to user
+        // because of it's many to many relationship, we just need to save into one repo (to the "master side" )
         boolean jobAlreadyInUserList = userJobs.stream().anyMatch((existingJob -> existingJob.getId().equals(job_id)));
             if (jobAlreadyInUserList){
                 throw new JobAlreadySavedException(job_id);           
