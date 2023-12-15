@@ -61,13 +61,15 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setLastName(user.getLastName());
         userToUpdate.setEmail(user.getEmail());
         userToUpdate.setCountry(user.getCountry());
-        return userRepository.save(userToUpdate);
+        userRepository.save(userToUpdate);
+        return userToUpdate;
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
 
     @Override 
     public Job addJobToUser(Long id, Long job_id) {
@@ -77,9 +79,17 @@ public class UserServiceImpl implements UserService {
 
         Set <Job> userJobs = user.getJobs();
 
+        if (userJobs == null) {
+            userJobs = new HashSet<>();
+        }
+
         Job job = jobRepository.findById(job_id).orElseThrow(() -> new JobNotFoundException(job_id));
 
         Set <User> jobUsers = job.getUsers();
+
+        if (jobUsers == null) {
+            jobUsers = new HashSet<>();
+        }
 
         boolean jobAlreadyInUserList = userJobs.stream().anyMatch((existingJob -> existingJob.getId().equals(job_id)));
             if (jobAlreadyInUserList){
@@ -89,10 +99,9 @@ public class UserServiceImpl implements UserService {
                 job.setUsers(jobUsers);
                 jobRepository.save(job);
             }
-
+            
         logger.info("Job: " + job);
-        
-
+    
     return job;
 
 }
