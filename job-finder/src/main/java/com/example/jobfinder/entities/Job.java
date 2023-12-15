@@ -47,7 +47,7 @@ public class Job {
     private String description;
 
     @Column(name = "category")
-    @NotBlank(message = "Categort is mandatory")
+    @NotBlank(message = "Category is mandatory")
     private String category;
 
     @Column(name = "salary")
